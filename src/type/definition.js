@@ -261,6 +261,14 @@ export type GraphQLOutputType =
       | GraphQLList<GraphQLOutputType>,
     >;
 
+export type GraphQLNullableOutputType =
+  | GraphQLScalarType
+  | GraphQLObjectType
+  | GraphQLInterfaceType
+  | GraphQLUnionType
+  | GraphQLEnumType
+  | GraphQLList<GraphQLOutputType>;
+
 export function isOutputType(type: mixed): boolean %checks {
   return (
     isScalarType(type) ||

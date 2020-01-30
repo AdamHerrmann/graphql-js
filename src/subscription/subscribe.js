@@ -20,6 +20,7 @@ import {
   getFieldDef,
   resolveFieldValueOrError,
 } from '../execution/execute';
+import { getArgumentValues } from '../execution/values';
 
 import { type GraphQLSchema } from '../type/schema';
 import { type GraphQLFieldResolver } from '../type/definition';
@@ -257,15 +258,20 @@ export function createSourceEventStream(
 
     const info = buildResolveInfo(exeContext, fieldDef, fieldNodes, type, path);
 
+    const args = getArgumentValues(
+      fieldDef,
+      fieldNodes[0],
+      exeContext.variableValues,
+    );
+
     // resolveFieldValueOrError implements the "ResolveFieldEventStream"
     // algorithm from GraphQL specification. It differs from
     // "ResolveFieldValue" due to providing a different `resolveFn`.
     const result = resolveFieldValueOrError(
-      exeContext,
-      fieldDef,
-      fieldNodes,
       resolveFn,
       rootValue,
+      args,
+      exeContext,
       info,
     );
 
